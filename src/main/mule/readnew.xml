@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="7d5a6917-98a7-4bb2-8462-d6473f79ee2a" />
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="0b9cbcb6-64b6-4d79-b937-ffeed585135e" >
+		<http:listener-connection host="0.0.0.0" port="8084" />
+	</http:listener-config>
+	<flow name="readnewFlow" doc:id="2470fe3b-e5df-48d2-b29d-4aca03c8dde8" >
+		<http:listener doc:name="Listener" doc:id="2a48abaf-d688-49c3-bef2-a1deedf9e18f" config-ref="HTTP_Listener_config1" path="/readpath"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e56f7d29-050e-43ab-8a79-9de48a4a520b" message="filenew"/>
+		<set-variable value="#[attributes.queryParams.fileName]" doc:name="Set Variable" doc:id="d74a13b5-6296-4d92-a597-c1aefc1b93fd" variableName="filenameVar"/>
+		<file:read doc:name="Read" doc:id="9670118f-b74c-4dae-9e2e-8882177e7405" config-ref="File_Config" path='#["D:\\mulesoft\\clouhub\\"  ++ vars.filenameVar]'/>
+		<logger level="INFO" doc:name="Logger" doc:id="e654c7cd-8a7b-4028-9f6f-72882e292a49" message="#[payload]"/>
+		<file:write doc:name="Write" doc:id="248f75fd-33d3-4ad7-aab0-131df6c672dc" config-ref="File_Config" path="D:\mulesoft\doublenewfile\newfile\rajstudent.csv"/>
+	</flow>
+</mule>
